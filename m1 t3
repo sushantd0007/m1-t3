@@ -1,0 +1,50 @@
+int pirPin = 2;
+int tmpPin = A0;
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  
+  pinMode(pirPin, INPUT);
+
+  
+  attachInterrupt(digitalPinToInterrupt(pirPin), motionDetected, CHANGE);
+
+  
+  Serial.begin(9600);
+}
+
+
+void motionDetected() {
+ 
+  int pirState = digitalRead(pirPin);
+
+
+ 
+  if (pirState == HIGH) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    Serial.println("Motion detected");
+  } else {
+    
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+}
+
+void loop() {
+ 
+  int tmpReading = analogRead(tmpPin);
+
+ 
+  float voltage = tmpReading * 5.0 / 1024.0;
+
+ 
+  float temperature = (voltage - 0.5) * 100;
+
+  
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println("C");
+
+
+  delay(1000);
+}
